@@ -5,6 +5,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import properties from './routes/properties.js';
+import apiKeyMiddleware from './middleware/apikeymiddleware.js';
 
 dotenv.config(); 
 
@@ -23,6 +24,7 @@ app.use(cors());
 app.use(helmet()); 
 app.use(express.json());
 app.use(limiter)
+app.use(apiKeyMiddleware)
 
 // API Routes
 app.use('/api/v1/properties', properties);
