@@ -24,10 +24,10 @@ app.use(cors());
 app.use(helmet()); 
 app.use(express.json());
 app.use(limiter)
-app.use(apiKeyMiddleware)
+
 
 // API Routes
-app.use('/api/v1/properties', properties);
+app.use('/api/v1/properties', apiKeyMiddleware, properties);
 
 // Health check route
 app.get('/health', (req, res) => {
