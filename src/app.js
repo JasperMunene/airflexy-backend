@@ -30,7 +30,7 @@ app.use(limiter)
 app.use('/api/v1/properties', apiKeyMiddleware, properties);
 
 // Health check route
-app.get('/health', (req, res) => {
+app.get('/api/v1/health', (req, res) => {
   res.status(200).send('Server is running');
 });
 
