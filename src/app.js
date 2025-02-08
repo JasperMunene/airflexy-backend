@@ -76,6 +76,22 @@ app.get('/redis-test', async (req, res) => {
     res.status(500).send(`Redis error: ${err.message}`);
   }
 });
+
+app.get('/redis-debug', async (req, res) => {
+  try {
+    const redisInfo = await redisClient.info();
+    res.send(`
+      <h1>Redis Connection Success</h1>
+      <pre>${redisInfo}</pre>
+    `);
+  } catch (err) {
+    res.send(`
+      <h1>Redis Connection Failed</h1>
+      <p>Using URL: ${process.env.REDIS_URL}</p>
+      <pre>${err.stack}</pre>
+    `);
+  }
+});
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);
