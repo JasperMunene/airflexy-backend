@@ -1,12 +1,16 @@
+import dotenv from 'dotenv';
 import { Router } from "express";
 import upload from "../utils/multer.js";
 import { Queue } from "bullmq";
 import { supabase } from "../config/supabaseConfig.js";
 import geohash from "ngeohash";
 
+dotenv.config();
+
+const REDIS_URL = process.env.REDIS_URL;
 // Create a BullMQ queue for image uploads
 const queue = new Queue("image-upload", {
-  redis: { host: "localhost", port: 6379 },
+  redis: { url: REDIS_URL },
 });
 
 const router = Router();

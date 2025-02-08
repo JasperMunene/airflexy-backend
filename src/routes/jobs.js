@@ -1,10 +1,14 @@
+import dotenv from 'dotenv';
 import { Router } from "express";
 const router = Router();
 import { Queue } from "bullmq";
+dotenv.config();
+
+const REDIS_URL = process.env.REDIS_URL;
 
 // Create a Redis Queue instance
 const queue = new Queue("image-upload", {
-  redis: { host: "localhost", port: 6379 },
+  redis: { url: REDIS_URL },
 });
 router.get("/", async (req, res) => {
   try {
