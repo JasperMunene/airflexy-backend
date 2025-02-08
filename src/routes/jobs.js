@@ -8,7 +8,12 @@ const REDIS_URL = process.env.REDIS_URL;
 
 // Create a Redis Queue instance
 const queue = new Queue("image-upload", {
-  redis: { url: REDIS_URL },
+  connection: { 
+    url: REDIS_URL,
+    tls: {
+      rejectUnauthorized: false
+    }
+  }
 });
 router.get("/", async (req, res) => {
   try {

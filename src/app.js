@@ -20,6 +20,19 @@ import './utils/imageWorker.js';  // Start the image worker
 import properties from './routes/properties.js';
 import jobs from './routes/jobs.js';
 import cloudinary from 'cloudinary';
+import { createClient } from 'redis';
+
+const redisClient = createClient({
+  url: process.env.REDIS_URL,
+  socket: {
+    tls: true,
+    rejectUnauthorized: false 
+  }
+});
+
+redisClient.on('error', err => console.log('Redis Client Error', err));
+
+await redisClient.connect();
 
 // Configure Cloudinary using env variables
 cloudinary.config({ 
@@ -55,6 +68,14 @@ app.get('/api/v1/health', (req, res) => {
 // Queue Status route
 app.use('/api/v1/job', jobs);
 
+app.get('/redis-test', async (req, res) => {
+  try {
+    await redisClient.ping();
+    res.send('Redis connection successful');
+  } catch (err) {
+    res.status(500).send(`Redis error: ${err.message}`);
+  }
+});
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err);

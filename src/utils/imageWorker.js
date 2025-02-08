@@ -10,7 +10,13 @@ const REDIS_URL = process.env.REDIS_URL;
 
 // Configure the queue with your Redis settings
 const queue = new Queue("image-upload", {
-  connection: { url: REDIS_URL  },
+  connection: { 
+    url: REDIS_URL,
+    tls: {
+      rejectUnauthorized: false
+    } 
+   },
+  
 });
 
 
@@ -83,7 +89,12 @@ const worker = new Worker(
     }
   },
   {
-    connection: { url: REDIS_URL },
+    connection: { 
+      url: REDIS_URL,
+      tls: {
+        rejectUnauthorized: false
+      }
+    }
   }
 );
 
